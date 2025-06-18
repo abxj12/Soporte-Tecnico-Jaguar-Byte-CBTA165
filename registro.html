@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Registro Técnico - JaguarByte</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <img src="jaguarbyte.jpg" alt="Logo JaguarByte" class="logo" />
+    <h1>Registro técnico y agenda tu cita</h1>
+    <p>Completa este formulario para brindarte una mejor atención.</p>
+
+    <form id="formulario">
+
+      <script>
+        const params = new URLSearchParams(window.location.search);
+        const form = document.currentScript.closest("form");
+
+        ['nombre', 'apellidos', 'correo', 'telefono'].forEach(campo => {
+          const valor = params.get(campo);
+          if (valor) {
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = campo;
+            input.value = valor;
+            form.appendChild(input);
+          }
+        });
+      </script>
+
+      <h2>Datos para la cita</h2>
+      <select name="modalidad" required>
+        <option value="">Cita presencial o a distancia</option>
+        <option value="Presencial">Presencial</option>
+        <option value="Distancia">A distancia</option>
+      </select>
+
+      <input type="text" name="localidad" placeholder="Localidad" required />
+      <input type="text" name="direccion" placeholder="Dirección" required />
+      <input type="text" name="referencias" placeholder="Referencias" />
+
+      <h2>Agendar cita</h2>
+      <input type="date" name="fecha_cita" required />
+      <input type="time" name="hora_cita" required />
+
+      <button type="submit">Enviar</button>
+    </form>
+
+    <footer>
+      <p>Contacto: jaguar.byte00@gmail.com | +52 1 988 105 2427</p>
+      <p>Ubicación: Calle 25 N#305 x30 y 32, Col. Centro, Izamal, Yucatán, CP-97540</p>
+    </footer>
+  </div>
+
+  <script>
+    document.getElementById('formulario').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const form = e.target;
+      const formData = new FormData(form);
+
+      fetch('https://hook.us2.make.com/i6lja6alxauomcgijccptq8mfd5zgf2f', {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => {
+        if (response.ok) {
+          window.location.href = 'gracias.html';
+        } else {
+          alert('Hubo un problema al enviar el formulario.');
+        }
+      })
+      .catch(() => {
+        alert('No se pudo conectar con el servidor. Intenta más tarde.');
+      });
+    });
+  </script>
+
+</body>
+</html>
